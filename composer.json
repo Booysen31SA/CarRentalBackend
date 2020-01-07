@@ -1,0 +1,7 @@
+{
+    "name": "carrentalbackend/carrental",
+    "description": "car-rental backend",
+    "require": {
+        "bcosca/fatfree": "^3.7"
+    }
+}
