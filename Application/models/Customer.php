@@ -21,5 +21,19 @@
                throw new Exception($e);
          }
      }
+
+     public function searchViaSurname($surname) {
+        try{
+
+            $query = "SELECT * FROM customer WHERE surName = '$surname' ORDER BY created DESC";
+
+            $result = $this->db->exec($query);
+
+            return $result;
+
+         }catch(Exception $e){
+               throw new Exception($e);
+         }
+     }
     }
 ?>

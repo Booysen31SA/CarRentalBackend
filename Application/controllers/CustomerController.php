@@ -69,5 +69,49 @@ class CustomerController extends Controller {
         }
     }
 
+    function searchViaSurname($f3, $params){
+
+        header('Content-type:application/json');
+
+        try{
+
+            $surname = $params['surname'];
+
+            if(empty($surname)){
+                echo json_encode(array(
+                    'success' => false,
+                    'message' => 'Missing one or more required fields'
+                ));
+
+                return;
+            }
+
+            $customers = new Customer($this->db);
+            $result = $customers->searchViaSurname($surname);
+
+            if(empty($result)) {
+                
+                echo json_encode(array(
+                    'success' => false,
+                    'message' => 'No User Found by that Surname'
+                ));
+    
+                return;
+            }
+
+            echo json_encode(array(
+                'success' => true,
+                'count' => count($result),
+                'results' => $result
+            ));
+
+        }catch(Exception $e){
+            echo json_encode(array(
+                'success' => false,
+                'message' => $e->getMessage()
+            ));
+        }
+    }
+
     }
 ?>
