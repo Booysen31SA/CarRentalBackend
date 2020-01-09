@@ -84,5 +84,20 @@
              throw new Exception($e);
          }
      }
+
+     public function delete($data){
+        try{
+  
+            $this->load(array('custNumber = ?', $data['custNumber']));
+  
+             $this->copyFrom($data);
+     
+             $this->save();
+        }catch(Exception $e){
+  
+         throw new Exception($e);
+  
+        }
+     }
     }
 ?>

@@ -178,7 +178,6 @@ function create($f3, $params) {
             unset($data['disabled']);
 
             $data['custNumber'] = $custNumber;
-            $data['LastRented'] = date('Y-m-d H:i:s');
             $data['canRent'] = 0;
 
             $customer->create($data, 'update');
@@ -198,6 +197,71 @@ function create($f3, $params) {
             ));
 
         }
+}
+
+function delete($f3, $params){
+    
+    header('Content-type:application/json');
+
+    try{
+
+        $custNumber = $params['custNumber'];
+
+        if(empty('custNumber')){
+            echo json_encode(array(
+                'success' => false,
+                'message' => 'Missing one or more required fields'
+            ));
+            
+            return;
+        }
+
+        $customer = new Customer($this->db);
+
+        $result = $customer->searchViaCustNumber($custNumber);
+
+
+        if(empty($result)){
+            echo json_encode(array(
+                'success' => false,
+                'message' => 'Customer does not exist'
+            ));
+
+            return;
+        }
+
+        if($result['canRent']){
+            echo json_encode(array(
+                'success' => false,
+                'message' => 'Customer still needs to return rental Car'
+            ));
+
+            return;
+        }
+
+        $data['custNumber'] = $custNumber;
+        $data['firstName'] = $result[0]['firstName'];
+        $data['surName'] = $result[0]['surName'];
+        $data['Phone_Number'] = $result[0]['Phone_Number'];
+        $data['Address'] = $result[0]['Address'];
+        $data['canRent'] = $result[0]['canRent'];
+        $data['created'] = $result[0]['created'];
+        $data['LastRented'] = $result[0]['LastRented'];
+        $data['disabled'] = 1;
+
+        $customer->delete($data);
+
+        echo json_encode(array(
+            'success' => true,
+            'message' => 'Customer successfully deactivated'
+        ));
+    }catch(Exception $e){
+
+        echo json_encode(array(
+            'success' => false,
+            'message' => $e->getMessage()
+        ));
+    }
 }
     }
 ?>
