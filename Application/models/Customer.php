@@ -64,13 +64,21 @@
          }
      }
 
-     public function create($data){
+     public function create($data, $type){
         try{
+           if($type == 'create'){
             $this->load(array('Phone_Number = ?', $data['Phone_Number']));
 
             $this->copyFrom($data);
 
             $this->save();
+           } else {
+            $this->load(array('custNumber = ?', $data['custNumber']));
+
+            $this->copyFrom($data);
+
+            $this->save();  
+           }
 
          }catch(Exception $e){
              throw new Exception($e);

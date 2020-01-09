@@ -134,7 +134,6 @@ function create($f3, $params) {
             ));
             return;
         }
-
         $customer = new Customer($this->db);
 
         if(empty($custNumber)){
@@ -154,7 +153,7 @@ function create($f3, $params) {
             $data['created'] = date('Y-m-d H:i:s');
             $data['disabled'] = 0;
 
-            $customer->create($data);
+            $customer->create($data, 'create');
     
             echo json_encode(array(
                 'success' => true,
@@ -178,9 +177,11 @@ function create($f3, $params) {
             unset($data['created']);
             unset($data['disabled']);
 
+            $data['custNumber'] = $custNumber;
             $data['LastRented'] = date('Y-m-d H:i:s');
+            $data['canRent'] = 0;
 
-            $customer->create($data);
+            $customer->create($data, 'update');
     
             echo json_encode(array(
                 'success' => true,
