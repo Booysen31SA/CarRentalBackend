@@ -42,8 +42,8 @@ class CustomerController extends Controller {
                 return;
             }
 
-            $vehicleCategories = new vehicleCategories($this->db);
-            $result = $vehicleCategories->readByVehicleType($vehicleType);
+            $customers = new Customer($this->db);
+            $result = $customers->getAllCustomers($disabled);
 
             if(empty($result)) {
                 
