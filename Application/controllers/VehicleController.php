@@ -126,16 +126,16 @@ class VehicleController extends Controller {
         }
     }
     //============================================================
-                    //searchByCategory
+                    //searchByMake
     //============================================================ 
 
-    function searchByCategory($f3, $params){
+    function searchByMake($f3, $params){
 
         header('Content-type:application/json');
 
         try{
 
-            $category = $params['category'];
+            $make = $params['make'];
 
             if(empty($category)){
                 echo json_encode(array(
@@ -147,13 +147,13 @@ class VehicleController extends Controller {
             }
 
             $vehicle = new Vehicle($this->db);
-            $result = $vehicle->searchByCategory($category);
+            $result = $vehicle->searchByMake($make);
 
             if(empty($result)) {
                 
                 echo json_encode(array(
                     'success' => false,
-                    'message' => 'No Vehicle found by that category'
+                    'message' => 'No Vehicle found by that make'
                 ));
     
                 return;

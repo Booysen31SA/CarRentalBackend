@@ -57,6 +57,20 @@
         }
      }
 
+     public function searchByMake($make){
+        try{
+
+            $query = "SELECT * FROM vehicle WHERE make = '$make' AND disabled = 0";
+
+            $result = $this->db->exec($query);
+            
+            return $result;
+            
+        }catch(Exception $e){
+          throw new Exception($e);
+        }
+     }
+
      public function getAllVehicles($disabled){
         try{
 
