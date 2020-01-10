@@ -49,5 +49,19 @@
                throw new Exception($e);
          }
      }
+
+     public function VehicleCategoryGetAll($disabled) {
+        try{
+
+            $query = "SELECT * FROM vehicleCategories WHERE disabled = '$disabled' ORDER BY created DESC";
+
+            $result = $this->db->exec($query);
+
+            return $result;
+
+         }catch(Exception $e){
+               throw new Exception($e);
+         }
+     }
  }
  ?>

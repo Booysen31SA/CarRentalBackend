@@ -202,5 +202,53 @@ class vehicleCategoriesController extends Controller {
         ));
     }
 }
+
+//============================================================
+                //Get All
+//============================================================
+
+function VehicleCategoryGetAll($f3, $params){
+
+    header('Content-type:application/json');
+
+    try{
+
+        $disabled = $params['disabled'];
+
+        if($disabled < 0 ){
+            echo json_encode(array(
+                'success' => false,
+                'message' => 'Missing one or more required fields'
+            ));
+
+            return;
+        }
+
+        $vehicleCategories = new vehicleCategories($this->db);
+        $result = $vehicleCategories->VehicleCategoryGetAll($disabled);
+
+        if(empty($result)) {
+            
+            echo json_encode(array(
+                'success' => false,
+                'message' => 'Customer List is empty'
+            ));
+
+            return;
+        }
+
+        echo json_encode(array(
+            'success' => true,
+            'count' => count($result),
+            'results' => $result
+        ));
+
+    }catch(Exception $e){
+        echo json_encode(array(
+            'success' => false,
+            'message' => $e->getMessage()
+        ));
+    }
+}
 }
 ?>
