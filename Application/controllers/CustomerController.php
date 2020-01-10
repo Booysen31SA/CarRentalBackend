@@ -207,7 +207,7 @@ function delete($f3, $params){
 
         $custNumber = $params['custNumber'];
 
-        if(empty('custNumber')){
+        if(empty($custNumber)){
             echo json_encode(array(
                 'success' => false,
                 'message' => 'Missing one or more required fields'
