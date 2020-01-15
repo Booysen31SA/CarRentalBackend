@@ -22,6 +22,25 @@ class CustomerController extends Controller {
     //         exit;
     //     }
     // }
+//call procedure
+    // function call(){
+    //     try{
+            
+    //         $customers = new Customer($this->db);
+    //         $result = $customers->GetUserBySurname('see');
+
+    //         echo json_encode(array(
+    //             'success' => true,
+    //             'results' => $result
+    //         ));
+    //     }catch(Exception $e){
+    //         echo json_encode(array(
+    //             'success' => false,
+    //             'message' => $e->getMessage()
+    //         ));
+
+    //     }
+    // }
     //============================================================
                     //get All List
     //============================================================
