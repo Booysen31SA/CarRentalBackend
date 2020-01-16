@@ -68,14 +68,6 @@ class RentalController extends Controller {
                     return;
                 }
 
-                if(!empty($rentalResults)){
-                    echo json_encode(array(
-                        'success' => false,
-                        'message' => 'Customer has already has an OUTSTANDING rental'
-                    ));
-                    return;
-                }
-
                 if($customerResults[0]['canRent'] == 1){
                     echo json_encode(array(
                         'success' => false,
@@ -167,8 +159,11 @@ class RentalController extends Controller {
                 // $dateRental =DateTime::createFromFormat('m-d-Y', $rentalResults[0]['dateRental'])->format('Y-m-d');
                 // $dateRenturned = date_format($data['dateReturned'],"Y/m/d");
 
-                $data['dateReturned'] = date('Y-m-d H:i:s');
-                $dateDiff = round(($rentalResults[0]['dateRental'] - $data['dateReturned']) / (60 * 60 *24)) + 1;
+                $data['dateReturned'] = date('Y-m-20 H:i:s');
+                $d1 = strtotime($rentalResults[0]['dateRental']);
+                $d2 = strtotime($data['dateReturned']);
+
+                $dateDiff = round(($d2-$d1) / 86400);
 
                 $PriceMustPay = $dateDiff * $rentalResults[0]['pricePerDay'];
 
