@@ -34,7 +34,7 @@ class RentalController extends Controller {
             $data = json_decode($f3->get('BODY'), true);
             $custNumber = $params['custNumber'];
 
-            if(empty($data['custNumber']) || empty($data['vehNumber'])){
+            if(empty($data['Phone_Number']) || empty($data['vehNumber'])){
                 echo json_encode(array(
                     'success' => false,
                     'message' => 'Missing fields'
@@ -48,7 +48,7 @@ class RentalController extends Controller {
 
             if(empty($custNumber)){
                 //create
-                $customerResults = $customer->searchViaCustNumber($data['custNumber']);
+                $customerResults = $customer->searchViaPhone_Number($data['Phone_Number']);
                 $vehicleResults = $vehicle->searchByvehNumber($data['vehNumber']);
                 $rentalResults = $rental->searchViaCustNumber($data['custNumber']);
 
