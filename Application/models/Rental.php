@@ -56,5 +56,47 @@
                throw new Exception($e);
          }
      }
+
+     public function getAllrentalsOutsanding(){
+        try{
+
+            $query = "SELECT * FROM rental WHERE dateReturned = null ORDER BY dateRental DESC";
+
+            $result = $this->db->exec($query);
+
+            return $result;
+
+         }catch(Exception $e){
+               throw new Exception($e);
+         }
+     }
+
+     public function getAllReturnedRentals(){
+        try{
+
+            $query = "SELECT * FROM rental WHERE dateReturned != null ORDER BY dateRental DESC";
+
+            $result = $this->db->exec($query);
+
+            return $result;
+
+         }catch(Exception $e){
+               throw new Exception($e);
+         }
+     }
+
+     public function getAllRentals(){
+        try{
+
+            $query = "SELECT * FROM rental WHERE ORDER BY dateRental DESC";
+
+            $result = $this->db->exec($query);
+
+            return $result;
+
+         }catch(Exception $e){
+               throw new Exception($e);
+         }
+     }
     }
 ?>

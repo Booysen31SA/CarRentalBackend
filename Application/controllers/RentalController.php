@@ -200,5 +200,102 @@ class RentalController extends Controller {
             ));
         }
     }
+
+    function getAllrentalsOutsanding(){
+
+        header('Content-type:application/json');
+
+        try{
+
+            $rental = new Rental($this->db);
+            $result = $rental->getAllrentalsOutsanding();
+
+            if(empty($result)) {
+                
+                echo json_encode(array(
+                    'success' => false,
+                    'message' => 'Rental List is empty'
+                ));
+    
+                return;
+            }
+
+            echo json_encode(array(
+                'success' => true,
+                'count' => count($result),
+                'results' => $result
+            ));
+
+        }catch(Exception $e){
+            echo json_encode(array(
+                'success' => false,
+                'message' => $e->getMessage()
+            ));
+        }
+    }
+    function getAllReturnedRentals(){
+
+        header('Content-type:application/json');
+
+        try{
+
+            $rental = new Rental($this->db);
+            $result = $rental->getAllReturnedRentals();
+
+            if(empty($result)) {
+                
+                echo json_encode(array(
+                    'success' => false,
+                    'message' => 'Rental List is empty'
+                ));
+    
+                return;
+            }
+
+            echo json_encode(array(
+                'success' => true,
+                'count' => count($result),
+                'results' => $result
+            ));
+
+        }catch(Exception $e){
+            echo json_encode(array(
+                'success' => false,
+                'message' => $e->getMessage()
+            ));
+        } 
+    }
+    function getAllRentals(){
+        
+        header('Content-type:application/json');
+
+        try{
+
+            $rental = new Rental($this->db);
+            $result = $rental->getAllRentals();
+
+            if(empty($result)) {
+                
+                echo json_encode(array(
+                    'success' => false,
+                    'message' => 'Rental List is empty'
+                ));
+    
+                return;
+            }
+
+            echo json_encode(array(
+                'success' => true,
+                'count' => count($result),
+                'results' => $result
+            ));
+
+        }catch(Exception $e){
+            echo json_encode(array(
+                'success' => false,
+                'message' => $e->getMessage()
+            ));
+        } 
+    }
 }
 ?>
