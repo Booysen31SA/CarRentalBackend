@@ -6,6 +6,18 @@
      {
          parent::__construct($db, 'customer');
      }
+//call procedure
+    //  public function GetUserBySurname($see){
+    //      try{
+    //         $query = "CALL GetUserBySurname('see')";
+
+    //         $result = $this->db->exec($query);
+
+    //         return $result;
+    //      }catch(Exception $e){
+    //         throw new Exception($e);
+    //   }
+    //  }
 
      public function getAllCustomers($disabled){
 
