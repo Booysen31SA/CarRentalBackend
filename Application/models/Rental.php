@@ -74,7 +74,7 @@
      public function getAllReturnedRentals(){
         try{
 
-            $query = "SELECT * FROM rental WHERE dateReturned != null ORDER BY dateRental DESC";
+            $query = "SELECT * FROM rental WHERE dateReturned IS NOT NULL ORDER BY dateRental DESC";
 
             $result = $this->db->exec($query);
 
