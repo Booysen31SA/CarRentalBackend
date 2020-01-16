@@ -88,7 +88,7 @@
      public function getAllRentals(){
         try{
 
-            $query = "SELECT * FROM rental WHERE ORDER BY dateRental DESC";
+            $query = "SELECT * FROM rental ORDER BY dateRental DESC";
 
             $result = $this->db->exec($query);
 
