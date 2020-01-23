@@ -165,8 +165,8 @@ class RentalController extends Controller {
                 $d2 = strtotime($data['dateReturned']);
 
                 $dateDiff = round(($d2-$d1) / 86400);
-
-                $PriceMustPay = $dateDiff * $rentalResults[0]['pricePerDay'];
+//current day return is one day
+                $PriceMustPay = ($dateDiff + 1) * $rentalResults[0]['pricePerDay'];
 
                 
                 $data['totalrental'] = $PriceMustPay;
