@@ -9,7 +9,7 @@
 
      public function create($data){
         try{
-            $this->load(array('custNumber = ?', $data['custNumber']));
+            $this->load(array('rentalNumber = ?', $data['rentalNumber']));
 
             $this->copyFrom($data);
             $this->save();
