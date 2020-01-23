@@ -60,7 +60,7 @@
      public function getAllrentalsOutsanding(){
         try{
 
-            $query = "SELECT * FROM rental WHERE dateReturned = null ORDER BY dateRental DESC";
+            $query = "SELECT * FROM rental WHERE dateReturned IS NULL ORDER BY dateRental DESC";
 
             $result = $this->db->exec($query);
 

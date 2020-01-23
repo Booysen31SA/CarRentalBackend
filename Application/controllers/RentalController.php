@@ -33,8 +33,8 @@ class RentalController extends Controller {
 
             $data = json_decode($f3->get('BODY'), true);
             $custNumber = $params['custNumber'];
-
-            if(empty($data['Phone_Number']) || empty($data['vehNumber'])){
+//custNumber would be phoneNumber in create but custNumber is CustNumber in update
+            if(empty($data['custNumber']) || empty($data['vehNumber'])){
                 echo json_encode(array(
                     'success' => false,
                     'message' => 'Missing fields'
@@ -48,7 +48,7 @@ class RentalController extends Controller {
 
             if(empty($custNumber)){
                 //create
-                $customerResults = $customer->searchViaPhone_Number($data['Phone_Number']);
+                $customerResults = $customer->searchViaPhone_Number($data['custNumber']);
                 $vehicleResults = $vehicle->searchByvehNumber($data['vehNumber']);
                 $rentalResults = $rental->searchViaCustNumber($data['custNumber']);
 
@@ -86,10 +86,11 @@ class RentalController extends Controller {
 
                 $data['dateRental'] = date('Y-m-d H:i:s');
                 $data['pricePerDay'] = $vehicleResults[0]['rentalPrice'];
+                $data['custNumber'] = $customerResults[0]['custNumber'];
                 //$data['pricePerDay'] = $vehicleResults['rentalPrice'];
 
                 //update customer canRent 
-                $customerData['custNumber'] = $data['custNumber'];
+                $customerData['custNumber'] = $customerResults[0]['custNumber'];
                 $customerData['canRent'] = 1;
                 $customerData['LastRented'] = date('Y-m-d H:i:s');
                 $customerData['firstName'] = $customerResults[0]['firstName'];
@@ -159,7 +160,7 @@ class RentalController extends Controller {
                 // $dateRental =DateTime::createFromFormat('m-d-Y', $rentalResults[0]['dateRental'])->format('Y-m-d');
                 // $dateRenturned = date_format($data['dateReturned'],"Y/m/d");
 
-                $data['dateReturned'] = date('Y-m-20 H:i:s');
+                $data['dateReturned'] = date('Y-m-d H:i:s');
                 $d1 = strtotime($rentalResults[0]['dateRental']);
                 $d2 = strtotime($data['dateReturned']);
 
@@ -169,7 +170,6 @@ class RentalController extends Controller {
 
                 
                 $data['totalrental'] = $PriceMustPay;
-                $data['pricePerDay'] = $rentalResults[0]['pricePerDay'];
                 //update customer canRent 
                 $customerData['custNumber'] = $data['custNumber'];
                 $customerData['canRent'] = 0;
