@@ -380,5 +380,31 @@ class RentalController extends Controller {
             ));
         }
     }
+
+    function Outstanding_Vs_Paid(){
+        try{
+            $rental = new Rental($this->db);
+            $result = $rental->Outstanding_Sales_Over_Sales();
+
+            $values[0]['name'] = 'Outstanding';
+            $values[0]['value'] = (int)$result[0]['count_nulls'];
+
+            $values[1]['name'] = 'sold';
+            $values[1]['value'] = (int)$result[0]['count_not_nulls'];
+
+ 
+            echo json_encode(array(
+                'success' => true,
+                'results' => $values
+            ));
+
+        }
+        catch(Exception $e){
+            echo json_encode(array(
+                'success' => false,
+                'message' => $e->getMessage()
+            ));
+        }
+    }
 }
 ?>

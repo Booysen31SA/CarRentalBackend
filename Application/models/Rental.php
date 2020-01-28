@@ -137,5 +137,19 @@
                     throw new Exception($e);
                  }
     }
+
+    public function Outstanding_Sales_Over_Sales(){
+        try{
+              $query = "CALL Outstanding_Sales_Over_Sales()";
+        
+              $result = $this->db->exec($query);
+        
+              return $result;
+              
+                 }
+                 catch(Exception $e){
+                    throw new Exception($e);
+                 }
+    }
     }
 ?>
