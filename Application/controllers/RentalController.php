@@ -297,5 +297,44 @@ class RentalController extends Controller {
             ));
         } 
     }
+
+    function SalesPerMonth(){
+        try{
+
+            $rental = new Rental($this->db);
+            $result = $rental->SalesPerMonth();
+
+            if($result){
+               $yearDate = $result[0]['SalesYear'];
+               unset($result[0]['SalesYear']);
+            }
+
+            $finalResults = [];
+            $finalResults[0]['name'] = 'Sales Per Month';
+
+            // $count = count($result);
+            for ($x = 0; $x < count($result); $x++) {
+                $monthNum  = $result[$x]['SalesMonth'];
+                $dateObj   = DateTime::createFromFormat('!m', $monthNum);
+                $monthName = $dateObj->format('F'); // March
+                $result[$x]['name'] = $monthName;
+
+                $result[$x]['value'] = (int)$result[$x]['TotalSales'];
+            }
+            $finalResults[0]['series'] = $result;
+
+            echo json_encode(array(
+                'name' => 'Sales per Month',
+                'SalesYear' => $yearDate,
+                'results' => $finalResults
+            ));
+
+        }catch(Exception $e){
+            echo json_encode(array(
+                'success' => false,
+                'message' => $e->getMessage()
+            ));
+        }
+    }
 }
 ?>

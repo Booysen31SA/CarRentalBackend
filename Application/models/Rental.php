@@ -98,5 +98,18 @@
                throw new Exception($e);
          }
      }
+
+     public function SalesPerMonth(){
+        try{
+              $query = "CALL SalesPerMonth()";
+        
+              $result = $this->db->exec($query);
+        
+              return $result;
+              
+                 }catch(Exception $e){
+                    throw new Exception($e);
+                 }
+    }
     }
 ?>
