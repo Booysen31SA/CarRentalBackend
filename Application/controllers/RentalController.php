@@ -336,5 +336,49 @@ class RentalController extends Controller {
             ));
         }
     }
+
+    function Models_Sold(){
+
+        try{
+
+            $rental = new Rental($this->db);
+            $result = $rental->Models_Sold();
+
+            $result[0]['value'] = (int)$result[0]['value'];
+ 
+            echo json_encode(array(
+                'success' => true,
+                'results' => $result
+            ));
+
+        }catch(Exception $e){
+            echo json_encode(array(
+                'success' => false,
+                'message' => $e->getMessage()
+            ));
+        }
+    }
+
+    function Manual_VS_Automatic(){
+
+        try{
+
+            $rental = new Rental($this->db);
+            $result = $rental->Manual_VS_Automatic();
+
+            $result[0]['value'] = (int)$result[0]['value'];
+ 
+            echo json_encode(array(
+                'success' => true,
+                'results' => $result
+            ));
+
+        }catch(Exception $e){
+            echo json_encode(array(
+                'success' => false,
+                'message' => $e->getMessage()
+            ));
+        }
+    }
 }
 ?>

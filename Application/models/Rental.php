@@ -106,6 +106,32 @@
               $result = $this->db->exec($query);
         
               return $result;
+
+                 }catch(Exception $e){
+                    throw new Exception($e);
+                 }
+    }
+
+    public function Models_Sold(){
+        try{
+              $query = "CALL Models_Sold()";
+        
+              $result = $this->db->exec($query);
+        
+              return $result;
+              
+                 }catch(Exception $e){
+                    throw new Exception($e);
+                 }
+    }
+
+    public function Manual_VS_Automatic(){
+        try{
+              $query = "CALL Manual_VS_Automatic()";
+        
+              $result = $this->db->exec($query);
+        
+              return $result;
               
                  }catch(Exception $e){
                     throw new Exception($e);
