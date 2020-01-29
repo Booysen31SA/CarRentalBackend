@@ -9,7 +9,7 @@
 
      public function create($data){
         try{
-            $this->load(array('custNumber = ?', $data['custNumber']));
+            $this->load(array('rentalNumber = ?', $data['rentalNumber']));
 
             $this->copyFrom($data);
             $this->save();
@@ -60,7 +60,7 @@
      public function getAllrentalsOutsanding(){
         try{
 
-            $query = "SELECT * FROM rental WHERE dateReturned = null ORDER BY dateRental DESC";
+            $query = "SELECT * FROM rental WHERE dateReturned IS NULL ORDER BY dateRental DESC";
 
             $result = $this->db->exec($query);
 
@@ -98,5 +98,71 @@
                throw new Exception($e);
          }
      }
+
+     public function SalesPerMonth(){
+        try{
+              $query = "CALL SalesPerMonth()";
+        
+              $result = $this->db->exec($query);
+        
+              return $result;
+
+                 }catch(Exception $e){
+                    throw new Exception($e);
+                 }
+    }
+
+    public function Models_Sold(){
+        try{
+              $query = "CALL Models_Sold()";
+        
+              $result = $this->db->exec($query);
+        
+              return $result;
+              
+                 }catch(Exception $e){
+                    throw new Exception($e);
+                 }
+    }
+
+    public function Manual_VS_Automatic(){
+        try{
+              $query = "CALL Manual_VS_Automatic()";
+        
+              $result = $this->db->exec($query);
+        
+              return $result;
+              
+                 }catch(Exception $e){
+                    throw new Exception($e);
+                 }
+    }
+
+    public function Outstanding_Sales_Over_Sales(){
+        try{
+              $query = "CALL Outstanding_Sales_Over_Sales()";
+        
+              $result = $this->db->exec($query);
+        
+              return $result;
+              
+                 }
+                 catch(Exception $e){
+                    throw new Exception($e);
+                 }
+    }
+
+    public function car_sales_category(){
+        try{
+            $query = "CALL car_sales_category()";
+      
+            $result = $this->db->exec($query);
+      
+            return $result;
+            
+               }catch(Exception $e){
+                  throw new Exception($e);
+               }
+    }
     }
 ?>

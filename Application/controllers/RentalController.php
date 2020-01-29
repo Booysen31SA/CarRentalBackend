@@ -33,7 +33,7 @@ class RentalController extends Controller {
 
             $data = json_decode($f3->get('BODY'), true);
             $custNumber = $params['custNumber'];
-
+//custNumber would be phoneNumber in create but custNumber is CustNumber in update
             if(empty($data['custNumber']) || empty($data['vehNumber'])){
                 echo json_encode(array(
                     'success' => false,
@@ -48,7 +48,7 @@ class RentalController extends Controller {
 
             if(empty($custNumber)){
                 //create
-                $customerResults = $customer->searchViaCustNumber($data['custNumber']);
+                $customerResults = $customer->searchViaPhone_Number($data['custNumber']);
                 $vehicleResults = $vehicle->searchByvehNumber($data['vehNumber']);
                 $rentalResults = $rental->searchViaCustNumber($data['custNumber']);
 
@@ -86,10 +86,11 @@ class RentalController extends Controller {
 
                 $data['dateRental'] = date('Y-m-d H:i:s');
                 $data['pricePerDay'] = $vehicleResults[0]['rentalPrice'];
+                $data['custNumber'] = $customerResults[0]['custNumber'];
                 //$data['pricePerDay'] = $vehicleResults['rentalPrice'];
 
                 //update customer canRent 
-                $customerData['custNumber'] = $data['custNumber'];
+                $customerData['custNumber'] = $customerResults[0]['custNumber'];
                 $customerData['canRent'] = 1;
                 $customerData['LastRented'] = date('Y-m-d H:i:s');
                 $customerData['firstName'] = $customerResults[0]['firstName'];
@@ -159,17 +160,16 @@ class RentalController extends Controller {
                 // $dateRental =DateTime::createFromFormat('m-d-Y', $rentalResults[0]['dateRental'])->format('Y-m-d');
                 // $dateRenturned = date_format($data['dateReturned'],"Y/m/d");
 
-                $data['dateReturned'] = date('Y-m-20 H:i:s');
+                $data['dateReturned'] = date('Y-m-d H:i:s');
                 $d1 = strtotime($rentalResults[0]['dateRental']);
                 $d2 = strtotime($data['dateReturned']);
 
                 $dateDiff = round(($d2-$d1) / 86400);
-
-                $PriceMustPay = $dateDiff * $rentalResults[0]['pricePerDay'];
+//current day return is one day
+                $PriceMustPay = ($dateDiff + 1) * $rentalResults[0]['pricePerDay'];
 
                 
                 $data['totalrental'] = $PriceMustPay;
-                $data['pricePerDay'] = $rentalResults[0]['pricePerDay'];
                 //update customer canRent 
                 $customerData['custNumber'] = $data['custNumber'];
                 $customerData['canRent'] = 0;
@@ -296,6 +296,134 @@ class RentalController extends Controller {
                 'message' => $e->getMessage()
             ));
         } 
+    }
+
+    function SalesPerMonth(){
+        try{
+
+            $rental = new Rental($this->db);
+            $result = $rental->SalesPerMonth();
+
+            if($result){
+               $yearDate = $result[0]['SalesYear'];
+               unset($result[0]['SalesYear']);
+            }
+
+            $finalResults = [];
+            $finalResults[0]['name'] = 'Sales Per Month';
+
+            // $count = count($result);
+            for ($x = 0; $x < count($result); $x++) {
+                $monthNum  = $result[$x]['SalesMonth'];
+                $dateObj   = DateTime::createFromFormat('!m', $monthNum);
+                $monthName = $dateObj->format('F'); // March
+                $result[$x]['name'] = $monthName;
+
+                $result[$x]['value'] = (int)$result[$x]['TotalSales'];
+            }
+            $finalResults[0]['series'] = $result;
+
+            echo json_encode(array(
+                'name' => 'Sales per Month',
+                'SalesYear' => $yearDate,
+                'results' => $finalResults
+            ));
+
+        }catch(Exception $e){
+            echo json_encode(array(
+                'success' => false,
+                'message' => $e->getMessage()
+            ));
+        }
+    }
+
+    function Models_Sold(){
+
+        try{
+
+            $rental = new Rental($this->db);
+            $result = $rental->Models_Sold();
+
+            $result[0]['value'] = (int)$result[0]['value'];
+ 
+            echo json_encode(array(
+                'success' => true,
+                'results' => $result
+            ));
+
+        }catch(Exception $e){
+            echo json_encode(array(
+                'success' => false,
+                'message' => $e->getMessage()
+            ));
+        }
+    }
+
+    function Manual_VS_Automatic(){
+
+        try{
+
+            $rental = new Rental($this->db);
+            $result = $rental->Manual_VS_Automatic();
+
+            $result[0]['value'] = (int)$result[0]['value'];
+ 
+            echo json_encode(array(
+                'success' => true,
+                'results' => $result
+            ));
+
+        }catch(Exception $e){
+            echo json_encode(array(
+                'success' => false,
+                'message' => $e->getMessage()
+            ));
+        }
+    }
+
+    function Outstanding_Vs_Paid(){
+        try{
+            $rental = new Rental($this->db);
+            $result = $rental->Outstanding_Sales_Over_Sales();
+
+            $values[0]['name'] = 'Outstanding';
+            $values[0]['value'] = (int)$result[0]['count_nulls'];
+
+            $values[1]['name'] = 'sold';
+            $values[1]['value'] = (int)$result[0]['count_not_nulls'];
+
+ 
+            echo json_encode(array(
+                'success' => true,
+                'results' => $values
+            ));
+
+        }
+        catch(Exception $e){
+            echo json_encode(array(
+                'success' => false,
+                'message' => $e->getMessage()
+            ));
+        }
+    }
+
+    function car_sales_category(){
+        try{
+            $rental = new Rental($this->db);
+            $result = $rental->car_sales_category();
+ 
+            echo json_encode(array(
+                'success' => true,
+                'results' => $result
+            ));
+
+        }
+        catch(Exception $e){
+            echo json_encode(array(
+                'success' => false,
+                'message' => $e->getMessage()
+            ));
+        }
     }
 }
 ?>
