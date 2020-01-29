@@ -151,5 +151,18 @@
                     throw new Exception($e);
                  }
     }
+
+    public function car_sales_category(){
+        try{
+            $query = "CALL car_sales_category()";
+      
+            $result = $this->db->exec($query);
+      
+            return $result;
+            
+               }catch(Exception $e){
+                  throw new Exception($e);
+               }
+    }
     }
 ?>

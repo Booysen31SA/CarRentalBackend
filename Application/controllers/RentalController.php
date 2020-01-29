@@ -406,5 +406,24 @@ class RentalController extends Controller {
             ));
         }
     }
+
+    function car_sales_category(){
+        try{
+            $rental = new Rental($this->db);
+            $result = $rental->car_sales_category();
+ 
+            echo json_encode(array(
+                'success' => true,
+                'results' => $result
+            ));
+
+        }
+        catch(Exception $e){
+            echo json_encode(array(
+                'success' => false,
+                'message' => $e->getMessage()
+            ));
+        }
+    }
 }
 ?>
