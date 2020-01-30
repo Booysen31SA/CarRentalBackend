@@ -188,5 +188,23 @@ class UserController extends Controller {
 
         }
     }
+    function Get_PendingList(){
+        try{
+            $user = new User($this->db);
+            $result = $user->Get_PendingList();
+ 
+            echo json_encode(array(
+                'success' => true,
+                'results' => $result
+            ));
+
+        }
+        catch(Exception $e){
+            echo json_encode(array(
+                'success' => false,
+                'message' => $e->getMessage()
+            ));
+        }
+    }
 }
 ?>
