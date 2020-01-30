@@ -132,6 +132,7 @@ class UserController extends Controller {
                 $data['Password'] = md5($data['Password']);
                 $data['disabled'] = 0;
                 $data['Created'] = date('Y-m-d H:i:s');
+                $data['status'] = 'Pending';
 
                 $user->create($data);
 
