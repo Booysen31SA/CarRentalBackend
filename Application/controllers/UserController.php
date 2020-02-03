@@ -206,5 +206,92 @@ class UserController extends Controller {
             ));
         }
     }
+
+    function Approve($f3, $params){
+
+        header('Content-type:application/json');
+
+        try{
+
+            $user = new User($this->db);
+
+            $data = json_decode($f3->get('BODY'), true);
+
+            if(empty($data['Username']) || empty($data['UserID'])){
+                echo json_encode(array(
+                    'success' => false,
+                    'message' => 'Missing required felds'
+                ));
+            }
+
+            $result = $user->getByUsername($data['Username']);
+
+            if(empty($result)){
+                echo json_encode(array(
+                    'success' => false,
+                    'message' => 'User Does not exist'
+                ));
+            }
+
+            $data['status'] = 'Approve';
+
+            $user->create($data);
+
+            echo json_encode(array(
+                'success' => 'Success',
+                'message' => 'User has been successfully Approved'
+            ));
+
+        }catch(Exception $e){
+            echo json_encode(array(
+                'success' => false,
+                'message' => $e->getMessage()
+            ));
+        }
+    }
+
+    function Decline($f3, $params){
+
+        header('Content-type:application/json');
+
+        try{
+
+            $user = new User($this->db);
+
+            $data = json_decode($f3->get('BODY'), true);
+
+            if(empty($data['Username']) || empty($data['UserID'])){
+                echo json_encode(array(
+                    'success' => false,
+                    'message' => 'Missing required felds'
+                ));
+            }
+
+            $result = $user->getByUsername($data['Username']);
+
+            if(empty($result)){
+                echo json_encode(array(
+                    'success' => false,
+                    'message' => 'User ( ' + $data['Username'] + ' ) Does not exist'
+                ));
+            }
+
+            $data['status'] = 'Declined';
+            $data['disabled'] = 1;
+
+            $user->delete($data);
+
+            echo json_encode(array(
+                'success' => 'Success',
+                'message' => 'User ( ' + $data['Username'] + ' ) has been successfully Declined'
+            ));
+
+        }catch(Exception $e){
+            echo json_encode(array(
+                'success' => false,
+                'message' => $e->getMessage()
+            ));
+        }
+    }
 }
 ?>
