@@ -47,7 +47,7 @@ class UserController extends Controller {
 
                 echo json_encode(array(
                     'success' => false,
-                    'message' => 'User does not exist'
+                    'message' => 'Your account has either been declined or deleted'
                 ));
     
                 return;
