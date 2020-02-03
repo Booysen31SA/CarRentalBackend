@@ -64,6 +64,24 @@ class UserController extends Controller {
                 return;
             }
 
+            if($result[0]['status'] = 'Pending'){
+                echo json_encode(array(
+                    'success' => false,
+                    'message' => 'Your account is still pending approval'
+                ));
+    
+                return;
+            }
+
+            if($result[0]['status'] = 'Declined'){
+                echo json_encode(array(
+                    'success' => false,
+                    'message' => 'Your account has been Declined!'
+                ));
+    
+                return;
+            }
+
             unset($data['Password']);
             $data['Last_Login'] = date('Y-m-d H:i:s');
 
@@ -233,7 +251,7 @@ class UserController extends Controller {
                 ));
             }
 
-            $data['status'] = 'Approve';
+            $data['status'] = 'Approved';
 
             $user->create($data);
 
