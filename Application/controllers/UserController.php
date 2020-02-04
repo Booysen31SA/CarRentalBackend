@@ -101,6 +101,47 @@ class UserController extends Controller {
         }
     }
 
+    function getUserProfile($f3, $params){
+        
+        header('Content-type:application/json');
+
+        try{
+
+            $user = new User($this->db);
+
+            if(empty($params['Username'])){
+                echo json_encode(array(
+                    'success' => false,
+                    'message' => 'Please enter a Username'
+                ));
+    
+                return;
+            }
+
+            $result = $user->getByUsername($params['Username']);
+
+            if(empty($result)){
+                echo json_encode(array(
+                    'success' => false,
+                    'message' => 'Username is not found'
+                ));
+    
+                return;
+            }
+            echo json_encode(array(
+                'success' => true,
+                'results' => $result
+            ));
+
+
+        }catch(Exception $e){
+            echo json_encode(array(
+                'success' => false,
+                'message' => $e->getMessage()
+            ));
+        }
+    }
+
     function create($f3, $params){
 
         header('Content-type:application/json');
