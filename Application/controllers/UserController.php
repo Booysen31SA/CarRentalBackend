@@ -64,7 +64,7 @@ class UserController extends Controller {
                 return;
             }
 
-            if($result[0]['status'] = 'Pending'){
+            if($result[0]['status'] === 'Pending'){
                 echo json_encode(array(
                     'success' => false,
                     'message' => 'Your account is still pending approval'
@@ -73,7 +73,7 @@ class UserController extends Controller {
                 return;
             }
 
-            if($result[0]['status'] = 'Declined'){
+            if($result[0]['status'] === 'Declined'){
                 echo json_encode(array(
                     'success' => false,
                     'message' => 'Your account has been Declined!'
