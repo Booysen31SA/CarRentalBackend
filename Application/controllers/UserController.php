@@ -47,7 +47,7 @@ class UserController extends Controller {
 
                 echo json_encode(array(
                     'success' => false,
-                    'message' => 'User does not exist'
+                    'message' => 'Your account has either been declined or deleted'
                 ));
     
                 return;
@@ -59,6 +59,24 @@ class UserController extends Controller {
                 echo json_encode(array(
                     'success' => false,
                     'message' => 'Username or Password does not match'
+                ));
+    
+                return;
+            }
+
+            if($result[0]['status'] === 'Pending'){
+                echo json_encode(array(
+                    'success' => false,
+                    'message' => 'Your account is still pending approval'
+                ));
+    
+                return;
+            }
+
+            if($result[0]['status'] === 'Declined'){
+                echo json_encode(array(
+                    'success' => false,
+                    'message' => 'Your account has been Declined!'
                 ));
     
                 return;
@@ -80,6 +98,47 @@ class UserController extends Controller {
                 'message' => $e->getMessage()
             ));
             exit;
+        }
+    }
+
+    function getUserProfile($f3, $params){
+        
+        header('Content-type:application/json');
+
+        try{
+
+            $user = new User($this->db);
+
+            if(empty($params['Username'])){
+                echo json_encode(array(
+                    'success' => false,
+                    'message' => 'Please enter a Username'
+                ));
+    
+                return;
+            }
+
+            $result = $user->getByUsername($params['Username']);
+
+            if(empty($result)){
+                echo json_encode(array(
+                    'success' => false,
+                    'message' => 'Username is not found'
+                ));
+    
+                return;
+            }
+            echo json_encode(array(
+                'success' => true,
+                'results' => $result
+            ));
+
+
+        }catch(Exception $e){
+            echo json_encode(array(
+                'success' => false,
+                'message' => $e->getMessage()
+            ));
         }
     }
 
@@ -132,6 +191,7 @@ class UserController extends Controller {
                 $data['Password'] = md5($data['Password']);
                 $data['disabled'] = 0;
                 $data['Created'] = date('Y-m-d H:i:s');
+                $data['status'] = 'Pending';
 
                 $user->create($data);
 
@@ -185,6 +245,111 @@ class UserController extends Controller {
                 'message' => $e->getMessage()
             ));
 
+        }
+    }
+    function Get_PendingList(){
+        try{
+            $user = new User($this->db);
+            $result = $user->Get_PendingList();
+ 
+            echo json_encode(array(
+                'success' => true,
+                'results' => $result
+            ));
+
+        }
+        catch(Exception $e){
+            echo json_encode(array(
+                'success' => false,
+                'message' => $e->getMessage()
+            ));
+        }
+    }
+
+    function Approve($f3, $params){
+
+        header('Content-type:application/json');
+
+        try{
+
+            $user = new User($this->db);
+
+            $data = json_decode($f3->get('BODY'), true);
+
+            if(empty($data['Username']) || empty($data['UserID'])){
+                echo json_encode(array(
+                    'success' => false,
+                    'message' => 'Missing required felds'
+                ));
+            }
+
+            $result = $user->getByUsername($data['Username']);
+
+            if(empty($result)){
+                echo json_encode(array(
+                    'success' => false,
+                    'message' => 'User Does not exist'
+                ));
+            }
+
+            $data['status'] = 'Approved';
+
+            $user->create($data);
+
+            echo json_encode(array(
+                'success' => 'Success',
+                'message' => 'User has been successfully Approved'
+            ));
+
+        }catch(Exception $e){
+            echo json_encode(array(
+                'success' => false,
+                'message' => $e->getMessage()
+            ));
+        }
+    }
+
+    function Decline($f3, $params){
+
+        header('Content-type:application/json');
+
+        try{
+
+            $user = new User($this->db);
+
+            $data = json_decode($f3->get('BODY'), true);
+
+            if(empty($data['Username']) || empty($data['UserID'])){
+                echo json_encode(array(
+                    'success' => false,
+                    'message' => 'Missing required felds'
+                ));
+            }
+
+            $result = $user->getByUsername($data['Username']);
+
+            if(empty($result)){
+                echo json_encode(array(
+                    'success' => false,
+                    'message' => 'User ( ' + $data['Username'] + ' ) Does not exist'
+                ));
+            }
+
+            $data['status'] = 'Declined';
+            $data['disabled'] = 1;
+
+            $user->delete($data);
+
+            echo json_encode(array(
+                'success' => 'Success',
+                'message' => 'User ( ' + $data['Username'] + ' ) has been successfully Declined'
+            ));
+
+        }catch(Exception $e){
+            echo json_encode(array(
+                'success' => false,
+                'message' => $e->getMessage()
+            ));
         }
     }
 }

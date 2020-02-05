@@ -59,5 +59,18 @@
           throw new Exception($e);
         }
      }
+
+     public function Get_PendingList(){
+        try{
+            $query = "CALL Get_PendingList()";
+      
+            $result = $this->db->exec($query);
+      
+            return $result;
+            
+               }catch(Exception $e){
+                  throw new Exception($e);
+               }
+    }
  }
 ?>
