@@ -297,7 +297,7 @@ class UserController extends Controller {
             $user->create($data);
 
             echo json_encode(array(
-                'success' => 'Success',
+                'success' => true,
                 'message' => 'User has been successfully Approved'
             ));
 
@@ -341,8 +341,8 @@ class UserController extends Controller {
             $user->delete($data);
 
             echo json_encode(array(
-                'success' => 'Success',
-                'message' => 'User ( ' + $data['Username'] + ' ) has been successfully Declined'
+                'success' => true,
+                'message' => 'User has been successfully Declined'
             ));
 
         }catch(Exception $e){
